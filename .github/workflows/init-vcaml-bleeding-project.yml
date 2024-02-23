@@ -15,6 +15,10 @@ jobs:
     env:
       NEOVIM_RELEASE_URL: https://github.com/neovim/neovim/releases/download/v0.9.5
     steps:
+    # TODO: Remove this step once cflags.sh is fixed
+    - name: cp /bin/bash /bin/sh (workaround)
+      if: matrix.os == 'ubuntu-latest'
+      run: cp /bin/bash /bin/sh
     - name: Download Neovim for Linux
       if: matrix.os == 'ubuntu-latest'
       run: curl -L "$NEOVIM_RELEASE_URL"/nvim-linux64.tar.gz -o nvim.tar.gz
