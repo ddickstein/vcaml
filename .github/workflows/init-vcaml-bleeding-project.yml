@@ -31,6 +31,9 @@ jobs:
         mkdir nvim
         tar -xzvf nvim.tar.gz -C nvim --strip-components 1
         echo "PATH=$PWD/nvim/bin:$PATH" >> "$GITHUB_ENV"
+        PATH=$PWD/nvim/bin:$PATH which nvim # Before
+    - name: Sanity check nvim
+      run: which nvim # After
     - name: Checkout repository
       uses: actions/checkout@v4
     - name: Install opam
