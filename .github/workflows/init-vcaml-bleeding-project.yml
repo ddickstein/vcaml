@@ -24,6 +24,9 @@ jobs:
       run: echo "NEOVIM_TARBALL=nvim-macos.tar.gz" >> "$GITHUB_ENV"
     - name: Download Neovim and add it to PATH
       run: |
+        echo "$NEOVIM_DOWNLOAD_URL"
+        echo "$NEOVIM_VERSION"
+        echo "$NEOVIM_TARBALL"
         curl -L "$NEOVIM_DOWNLOAD_URL/$NEOVIM_VERSION/$NEOVIM_TARBALL" -o nvim.tar.gz
         mkdir nvim
         tar -xzvf nvim.tar.gz -C nvim --strip-components 1
