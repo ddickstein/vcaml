@@ -16,13 +16,13 @@ jobs:
       NEOVIM_VERSION: v0.9.5
       NEOVIM_DOWNLOAD_URL: https://github.com/neovim/neovim/releases/download
     steps:
-    - name: Download Neovim for Linux
+    - name: Choose Neovim tarball for Linux
       if: matrix.os == 'ubuntu-latest'
       run: echo "NEOVIM_TARBALL=nvim-linux64.tar.gz" >> "$GITHUB_ENV"
-    - name: Download Neovim for MacOS
+    - name: Choose Neovim tarball for MacOS
       if: matrix.os == 'macos-latest'
       run: echo "NEOVIM_TARBALL=nvim-macos.tar.gz" >> "$GITHUB_ENV"
-    - name: Download Neovim and add it to PATH
+    - name: Download and extract Neovim tarball; add nvim to PATH
       run: |
         echo "$NEOVIM_DOWNLOAD_URL"
         echo "$NEOVIM_VERSION"
@@ -31,15 +31,14 @@ jobs:
         mkdir nvim
         tar -xzvf nvim.tar.gz -C nvim --strip-components 1
         echo "PATH=$PWD/nvim/bin:$PATH" >> "$GITHUB_ENV"
-        PATH=$PWD/nvim/bin:$PATH which nvim # Before
-    - name: Sanity check nvim
-      run: which nvim # After
+    - name: Download Opam for Linux
+      if: matrix.os == 'ubuntu-latest'
+      run: sudo apt-get install opam -y
+    - name: Download Opam for MacOS
+      if: matrix.os == 'macos-latest'
+      run: brew install opam
     - name: Checkout repository
       uses: actions/checkout@v4
-    - name: Install opam
-      uses: ocaml/setup-ocaml@v2
-      with:
-        ocaml-compiler: ${{ matrix.ocaml-compiler }}
     - name: Initialize vcaml project
       run: |
         chmod +x init-bleeding-vcaml-project.sh
