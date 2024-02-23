@@ -45,4 +45,5 @@ jobs:
         ./init-bleeding-vcaml-project.sh hello-vcaml
         cd hello-vcaml
         eval "$(opam env)"
+        echo "Sanity check: $(which nvim)"
         dune runtest
