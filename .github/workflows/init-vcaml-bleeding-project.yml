@@ -12,9 +12,22 @@ jobs:
         os: [macos-latest, ubuntu-latest]
         ocaml-compiler: ["5.1"]
     runs-on: ${{ matrix.os }}
+    env:
+      NEOVIM_RELEASE_URL: https://github.com/neovim/neovim/releases/download/v0.9.5
     steps:
+    - name: Download Neovim for Linux
+      if: matrix.os == 'ubuntu-latest'
+      run: curl -L "$NEOVIM_RELEASE_URL"/nvim-linux64.tar.gz -o nvim.tar.gz
+    - name: Download Neovim for MacOS
+      if: matrix.os == 'macos-latest'
+      run: curl -L "$NEOVIM_RELEASE_URL"/nvim-macos.tar.gz -o nvim.tar.gz
+    - name: Extract Neovim and add it to PATH
+      run: |
+        mkdir nvim
+        tar -xzvf nvim.tar.gz -C nvim --strip-components 1
+        export PATH="$PWD/nvim/bin/nvim:$PATH"
     - name: Checkout repository
-      uses: actions/checkout@v4    
+      uses: actions/checkout@v4
     - name: Install opam
       uses: ocaml/setup-ocaml@v2
       with:
