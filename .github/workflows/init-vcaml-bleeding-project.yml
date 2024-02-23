@@ -25,7 +25,7 @@ jobs:
       run: |
         mkdir nvim
         tar -xzvf nvim.tar.gz -C nvim --strip-components 1
-        export PATH="$PWD/nvim/bin/nvim:$PATH"
+        export PATH="$PWD/nvim/bin:$PATH"
     - name: Checkout repository
       uses: actions/checkout@v4
     - name: Install opam
