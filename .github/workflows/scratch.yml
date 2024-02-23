@@ -1,0 +1,15 @@
+name: scratch
+on: workflow_dispatch
+defaults:
+  run:
+    shell: bash
+jobs:
+  init-vcaml-bleeding-project:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [macos-latest, ubuntu-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+    - name: Job
+      run: /usr/bin/bash --version
