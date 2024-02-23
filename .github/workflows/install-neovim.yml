@@ -16,9 +16,10 @@ jobs:
       run: |
         curl -LO "$NEOVIM_RELEASE_URL"/nvim-linux64.tar.gz
         tar xzf nvim-linux64.tar.gz
-
+        ls nvim-linux64/bin
     - name: Download and extract Neovim on MacOS
       if: matrix.os == 'macos-latest'
       run: |
         curl -LO "$NEOVIM_RELEASE_URL"/nvim-macos.tar.gz
         tar xzf nvim-macos.tar.gz
+        ls nvim-macos/bin
