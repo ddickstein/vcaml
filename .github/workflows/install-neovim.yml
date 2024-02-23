@@ -1,6 +1,6 @@
 # Temporary workflow to be incorporated into init-vcaml-bleeding-project
 name: install-neovim
-on: []
+on: workflow_dispatch
 jobs:
   install-neovim:
     strategy:
