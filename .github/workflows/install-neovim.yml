@@ -1,0 +1,24 @@
+# Temporary workflow to be incorporated into init-vcaml-bleeding-project
+name: install-neovim
+on: []
+jobs:
+  install-neovim:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [macos-latest, ubuntu-latest]
+    env:
+      NEOVIM_RELEASE_URL: https://github.com/neovim/neovim/releases/download/v0.9.5
+    runs-on: ${{ matrix.os }}
+    steps:
+    - name: Download and extract Neovim on Linux
+      if: matrix.os == 'ubuntu-latest'
+      run: |
+        curl -LO "$NEOVIM_RELEASE_URL"/nvim-linux64.tar.gz
+        tar xzf nvim-linux64.tar.gz
+
+    - name: Download and extract Neovim on MacOS
+      if: matrix.os == 'macos-latest'
+      run: |
+        curl -LO "$NEOVIM_RELEASE_URL"/nvim-macos.tar.gz
+        tar xzf nvim-macos.tar.gz
