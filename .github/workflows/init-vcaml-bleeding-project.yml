@@ -1,0 +1,25 @@
+name: init-vcaml-bleeding-project
+on: push
+
+jobs:
+  init-vcaml-bleeding-project:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [macos-latest, ubuntu-latest]
+        ocaml-compiler: ["5.1"]
+    runs-on: ${{ matrix.os }}
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4    
+    - name: Install opam
+      uses: ocaml/setup-ocaml@v2
+      with:
+        ocaml-compiler: ${{ matrix.ocaml-compiler }}
+    - name: Initialize vcaml project
+      run: |
+        chmod +x init-bleeding-vcaml-project.sh
+        ./init-bleeding-vcaml-project.sh hello-vcaml
+        cd hello-vcaml
+        eval "$(opam env)"
+        dune runtest
