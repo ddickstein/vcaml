@@ -11,5 +11,9 @@ jobs:
         os: [macos-latest, ubuntu-latest]
     runs-on: ${{ matrix.os }}
     steps:
-    - name: Job
-      run: /usr/bin/bash --version
+    - name: Download Opam for Linux
+      if: matrix.os == 'ubuntu-latest'
+      run: apt-get install opam -y
+    - name: Download Opam for MacOS
+      if: matrix.os == 'macos-latest'
+      run: brew install opam
