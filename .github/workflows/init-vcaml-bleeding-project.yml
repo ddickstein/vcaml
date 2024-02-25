@@ -26,6 +26,9 @@ jobs:
         curl -L "$NVIM_DOWNLOAD_URL/$NVIM_VERSION/$NVIM_TARBALL" -o nvim.tar.gz
         mkdir nvim
         tar -xzvf nvim.tar.gz -C nvim --strip-components 1
+        echo "=== FIND ==="
+        find *
+        echo "============"
         echo "NVIM_PATH=$PWD/nvim/bin" >> "$GITHUB_ENV"
     - name: Download opam for Linux
       if: matrix.os == 'ubuntu-latest'
@@ -35,9 +38,8 @@ jobs:
       run: brew install opam
     - name: Checkout repository
       uses: actions/checkout@v4
-    - name: Initialize vcaml project
-      run: |
-        find *
+    # - name: Initialize vcaml project
+      # run: |
         # chmod +x init-bleeding-vcaml-project.sh
         # ./init-bleeding-vcaml-project.sh hello-vcaml
         # cd hello-vcaml
