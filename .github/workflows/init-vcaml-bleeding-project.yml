@@ -10,7 +10,6 @@ jobs:
       fail-fast: false
       matrix:
         os: [macos-latest, ubuntu-latest]
-        ocaml-compiler: ["5.1"]
     runs-on: ${{ matrix.os }}
     env:
       NEOVIM_VERSION: v0.9.5
