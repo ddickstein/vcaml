@@ -37,13 +37,14 @@ jobs:
       uses: actions/checkout@v4
     - name: Initialize vcaml project
       run: |
-        chmod +x init-bleeding-vcaml-project.sh
-        ./init-bleeding-vcaml-project.sh hello-vcaml
-        cd hello-vcaml
-        eval "$(opam env)"
-        export PATH="$NVIM_PATH:$PATH"
-        echo "NVIM_PATH: $NVIM_PATH"
-        echo "PATH: $PATH"
-        ls "$NVIM_PATH"
-        echo "which nvim: $(which nvim)"
+        tree nvim
+        # chmod +x init-bleeding-vcaml-project.sh
+        # ./init-bleeding-vcaml-project.sh hello-vcaml
+        # cd hello-vcaml
+        # eval "$(opam env)"
+        # export PATH="$NVIM_PATH:$PATH"
+        # echo "NVIM_PATH: $NVIM_PATH"
+        # echo "PATH: $PATH"
+        # ls "$NVIM_PATH"
+        # echo "which nvim: $(which nvim)"
         # dune runtest
