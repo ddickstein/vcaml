@@ -9,24 +9,24 @@ jobs:
         os: [macos-latest, ubuntu-latest]
     runs-on: ${{ matrix.os }}
     env:
-      NEOVIM_VERSION: v0.9.5
-      NEOVIM_DOWNLOAD_URL: https://github.com/neovim/neovim/releases/download
+      NVIM_VERSION: v0.9.5
+      NVIM_DOWNLOAD_URL: https://github.com/neovim/neovim/releases/download
     steps:
     - name: Choose Neovim tarball for Linux
       if: matrix.os == 'ubuntu-latest'
-      run: echo "NEOVIM_TARBALL=nvim-linux64.tar.gz" >> "$GITHUB_ENV"
+      run: echo "NVIM_TARBALL=nvim-linux64.tar.gz" >> "$GITHUB_ENV"
     - name: Choose Neovim tarball for MacOS
       if: matrix.os == 'macos-latest'
-      run: echo "NEOVIM_TARBALL=nvim-macos.tar.gz" >> "$GITHUB_ENV"
+      run: echo "NVIM_TARBALL=nvim-macos.tar.gz" >> "$GITHUB_ENV"
     - name: Download and extract Neovim tarball; add nvim to PATH
       run: |
-        echo "$NEOVIM_DOWNLOAD_URL"
-        echo "$NEOVIM_VERSION"
-        echo "$NEOVIM_TARBALL"
-        curl -L "$NEOVIM_DOWNLOAD_URL/$NEOVIM_VERSION/$NEOVIM_TARBALL" -o nvim.tar.gz
+        echo "$NVIM_DOWNLOAD_URL"
+        echo "$NVIM_VERSION"
+        echo "$NVIM_TARBALL"
+        curl -L "$NVIM_DOWNLOAD_URL/$NVIM_VERSION/$NVIM_TARBALL" -o nvim.tar.gz
         mkdir nvim
         tar -xzvf nvim.tar.gz -C nvim --strip-components 1
-        echo "PATH=$PWD/nvim/bin:$PATH" >> "$GITHUB_ENV"
+        echo "NVIM_PATH=$PWD/nvim/bin" >> "$GITHUB_ENV"
     - name: Download opam for Linux
       if: matrix.os == 'ubuntu-latest'
       run: sudo apt-get install opam -y
@@ -41,5 +41,5 @@ jobs:
         ./init-bleeding-vcaml-project.sh hello-vcaml
         cd hello-vcaml
         eval "$(opam env)"
-        echo "Sanity check: $(which nvim)"
+        export PATH="$NVIM_PATH:$PATH"
         dune runtest
