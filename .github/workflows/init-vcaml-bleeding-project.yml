@@ -42,4 +42,7 @@ jobs:
         cd hello-vcaml
         eval "$(opam env)"
         export PATH="$NVIM_PATH:$PATH"
+        echo "NVIM_PATH: $NVIM_PATH"
+        echo "PATH: $PATH"
+        echo "which nvim: $(which nvim)"
         dune runtest
