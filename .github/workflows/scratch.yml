@@ -32,6 +32,6 @@ jobs:
     - name: List vim
       run: |
         pwd
-        ls .
+        ls -la .
         echo ---
-        ls "$NVIM_PATH"
+        ls -la "$NVIM_PATH"
