@@ -1,5 +1,5 @@
 
-name: init-vcaml-bleeding-project
+name: scratch
 # TODO: on: push
 on: workflow_dispatch
 jobs:
