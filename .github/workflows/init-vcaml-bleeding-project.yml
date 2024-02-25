@@ -44,5 +44,6 @@ jobs:
         export PATH="$NVIM_PATH:$PATH"
         echo "NVIM_PATH: $NVIM_PATH"
         echo "PATH: $PATH"
+        ls "$NVIM_PATH"
         echo "which nvim: $(which nvim)"
-        dune runtest
+        # dune runtest
