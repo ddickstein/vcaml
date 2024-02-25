@@ -1,4 +1,3 @@
-
 name: scratch
 # TODO: on: push
 on: workflow_dispatch
@@ -9,8 +8,30 @@ jobs:
       matrix:
         os: [macos-latest]
     runs-on: ${{ matrix.os }}
+    env:
+      NVIM_VERSION: v0.9.5
+      NVIM_DOWNLOAD_URL: https://github.com/neovim/neovim/releases/download
     steps:
-    - name: Sanity checks
+    - name: Choose Neovim tarball for Linux
+      if: matrix.os == 'ubuntu-latest'
+      run: echo "NVIM_TARBALL=nvim-linux64.tar.gz" >> "$GITHUB_ENV"
+    - name: Choose Neovim tarball for MacOS
+      if: matrix.os == 'macos-latest'
+      run: echo "NVIM_TARBALL=nvim-macos.tar.gz" >> "$GITHUB_ENV"
+    - name: Download and extract Neovim tarball; add nvim to PATH
       run: |
-        echo "Pwd: $PWD"
-        echo "Home: $HOME"
+        echo "$NVIM_DOWNLOAD_URL"
+        echo "$NVIM_VERSION"
+        echo "$NVIM_TARBALL"
+        curl -L "$NVIM_DOWNLOAD_URL/$NVIM_VERSION/$NVIM_TARBALL" -o nvim.tar.gz
+        mkdir nvim
+        tar -xzvf nvim.tar.gz -C nvim --strip-components 1
+        echo "NVIM_PATH=$PWD/nvim/bin" >> "$GITHUB_ENV"
+    - name: Find
+      run: find *
+    - name: List vim
+      run: |
+        pwd
+        ls .
+        echo ---
+        ls "$NVIM_PATH"
