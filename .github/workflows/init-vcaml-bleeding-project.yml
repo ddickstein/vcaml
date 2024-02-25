@@ -7,35 +7,30 @@ jobs:
       fail-fast: false
       matrix:
         os: [macos-latest, ubuntu-latest]
+        nvim-version: [v0.9.5, nightly]
+        include:
+          - os: macos-latest
+            tarball: nvim-macos.tar.gz
+            install-opam: brew install opam
+          - os: ubuntu-latest
+            tarball: nvim-linux64.tar.gz
+            install-opam: sudo apt-get install opam -y
     runs-on: ${{ matrix.os }}
-    env:
-      NVIM_VERSION: 0.9.5
     steps:
     - name: Checkout repository
       uses: actions/checkout@v4
-    - name: Setup for Linux
-      if: matrix.os == 'ubuntu-latest'
-      run: |
-        sudo apt-get install opam -y
-        echo "NVIM_TARBALL=nvim-linux64.tar.gz" >> "$GITHUB_ENV"
-    - name: Setup for MacOS
-      if: matrix.os == 'macos-latest'
-      run: |
-        brew install opam
-        echo "NVIM_TARBALL=nvim-macos.tar.gz" >> "$GITHUB_ENV"
+    - name: Install opam
+      run: "${{matrix.install-opam}}"
     - name: Download and extract Neovim tarball
       run: |
-        echo "$NVIM_DOWNLOAD_URL"
-        echo "$NVIM_VERSION"
-        echo "$NVIM_TARBALL"
-        curl -L "https://github.com/neovim/neovim/releases/download/v$NVIM_VERSION/$NVIM_TARBALL" -o nvim.tar.gz
-        mkdir -p ${{ runner.temp }}/nvim
-        tar -xzvf nvim.tar.gz -C ${{ runner.temp }}/nvim --strip-components 1
+        curl -LO "https://github.com/neovim/neovim/releases/download/${{matrix.nvim-version}}/${{matrix.tarball}}"
+        mkdir -p "${{runner.temp}}/nvim"
+        tar -xzvf "${{matrix.tarball}}" -C "${{runner.temp}}/nvim" --strip-components 1
     - name: Initialize vcaml project
       run: |
         chmod +x init-bleeding-vcaml-project.sh
         ./init-bleeding-vcaml-project.sh hello-vcaml
         cd hello-vcaml
         eval "$(opam env)"
-        export PATH="${{ runner.temp }}/nvim/bin:$PATH"
+        export PATH="${{runner.temp}}/nvim/bin:$PATH"
         dune runtest
