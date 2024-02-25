@@ -1,9 +1,6 @@
 name: init-vcaml-bleeding-project
 # TODO: on: push
 on: workflow_dispatch
-defaults:
-  run:
-    shell: bash
 jobs:
   init-vcaml-bleeding-project:
     strategy:
