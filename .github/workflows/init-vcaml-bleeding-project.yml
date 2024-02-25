@@ -33,8 +33,12 @@ jobs:
     - name: Download opam for MacOS
       if: matrix.os == 'macos-latest'
       run: brew install opam
+    - name: Pre-checkout ls
+      run: ls -la "$NVIM_PATH"
     - name: Checkout repository
       uses: actions/checkout@v4
+    - name: Post-checkout ls
+      run: ls -la "$NVIM_PATH"
     - name: Initialize vcaml project
       run: |
         chmod +x init-bleeding-vcaml-project.sh
@@ -44,6 +48,6 @@ jobs:
         export PATH="$NVIM_PATH:$PATH"
         echo "NVIM_PATH: $NVIM_PATH"
         echo "PATH: $PATH"
-        ls "$NVIM_PATH"
+        ls -la "$NVIM_PATH"
         echo "which nvim: $(which nvim)"
         # dune runtest
