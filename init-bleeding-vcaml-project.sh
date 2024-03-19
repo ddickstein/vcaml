@@ -25,10 +25,10 @@ set -euo pipefail
   rm -rf "$1"
   mv "$tmp" "$1"
   cd "$1"
-  echo "Updating the opam repositories..."
-  opam update -y
   echo "Initializing a local opam switch to track janestreet-bleeding..."
   opam init --bare -n
+  echo "Updating the opam repositories..."
+  opam update -y
   opam repository add --dont-select janestreet-bleeding https://ocaml.janestreet.com/opam-repository
   opam repository add --dont-select janestreet-bleeding-external https://github.com/janestreet/opam-repository.git#external-packages
   opam switch create --repositories=janestreet-bleeding,janestreet-bleeding-external,default . 5.1.1
