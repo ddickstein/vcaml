@@ -29,11 +29,12 @@ jobs:
         curl -LO "https://github.com/neovim/neovim/releases/download/${{matrix.nvim-version}}/${{matrix.tarball}}"
         mkdir -p "${{runner.temp}}/nvim"
         tar -xzvf "${{matrix.tarball}}" -C "${{runner.temp}}/nvim" --strip-components 1
-    - name: Initialize vcaml project
+    - name: Initialize vcaml project with examples
       run: |
         chmod +x init-bleeding-vcaml-project.sh
         ./init-bleeding-vcaml-project.sh hello-vcaml
-    - name: Run dune tests
+    - name: Run dune tests for examples
+      run: |
         cd hello-vcaml
         eval "$(opam env)"
         export PATH="${{runner.temp}}/nvim/bin:$PATH"
