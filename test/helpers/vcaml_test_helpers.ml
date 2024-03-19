@@ -16,7 +16,7 @@ let default_args = [ "--clean"; "-n" ]
    communication with the plugin, place socket relative to the temporary working directory
    since there's some undocumented internal limit for the socket length (it doesn't appear
    in `:h limits). *)
-let required_args = [ "--headless"; "--embed"; "--listen"; "./socket" ]
+let required_args = [ "--headless"; "--embed"; "--listen"; "./socket"; "--cmd"; "set shortmess+=I" ]
 let verbose_env_var = "VCAML_VERBOSE"
 let elide_backtraces_env_var = "VCAML_ELIDE_BACKTRACES"
 
