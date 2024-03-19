@@ -1,0 +1,45 @@
+name: test
+on:
+  workflow_dispatch:
+jobs:
+  test:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [macos-latest, ubuntu-latest]
+        nvim-version: [v0.9.5, nightly]
+        include:
+          - os: macos-latest
+            tarball: nvim-macos.tar.gz
+            install-opam: brew install opam
+          - os: ubuntu-latest
+            tarball: nvim-linux64.tar.gz
+            install-opam: sudo apt-get install opam -y
+    runs-on: ${{ matrix.os }}
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+    - name: Install opam
+      run: "${{matrix.install-opam}}"
+    - name: Download and extract Neovim tarball
+      run: |
+        curl -LO "https://github.com/neovim/neovim/releases/download/${{matrix.nvim-version}}/${{matrix.tarball}}"
+        mkdir -p "${{runner.temp}}/nvim"
+        tar -xzvf "${{matrix.tarball}}" -C "${{runner.temp}}/nvim" --strip-components 1
+    - name: Install dependencies
+      run: |
+        opam init --bare -n
+        opam repository add --dont-select janestreet-bleeding https://github.com/janestreet/opam-repository.git
+        opam repository add --dont-select janestreet-bleeding-external https://github.com/janestreet/opam-repository.git#external-packages
+        opam switch create --repositories=janestreet-bleeding,janestreet-bleeding-external,default . 5.1.1
+        eval "$(opam env)"
+        echo "Installing dune..."
+        opam install dune
+        echo "Installing vcaml dependencies..."
+        opam install . --deps-only -y
+    - name: Run VCaml tests
+      run: |
+        eval "$(opam env)"
+        export PATH="${{runner.temp}}/nvim/bin:$PATH"
+        export OCAMLRUNPARAM="b=1"
+        dune runtest
