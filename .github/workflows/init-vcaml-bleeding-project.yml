@@ -1,6 +1,9 @@
 name: init-vcaml-bleeding-project
-# TODO: on: push
-on: workflow_dispatch
+on:
+  pull_request:
+    types: [opened, edited, reopened, synchronize]
+  push:
+  workflow_dispatch:
 jobs:
   init-vcaml-bleeding-project:
     strategy:
@@ -30,6 +33,7 @@ jobs:
       run: |
         chmod +x init-bleeding-vcaml-project.sh
         ./init-bleeding-vcaml-project.sh hello-vcaml
+    - name: Run dune tests
         cd hello-vcaml
         eval "$(opam env)"
         export PATH="${{runner.temp}}/nvim/bin:$PATH"
